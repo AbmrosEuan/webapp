@@ -1,0 +1,15 @@
+-
+  module_name: healthCheckService
+  class_name: healthCheckService
+  function_name: xxx
+  params:
+      AutoID: 
+      CheckID: 
+      IsDeleted: 
+      Datetime: 
+
+  validate:
+    - eq:
+        - code
+        - "2000"
+    
