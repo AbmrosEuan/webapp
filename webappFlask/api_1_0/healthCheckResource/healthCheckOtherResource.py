@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from flask_restful import Resource, reqparse
-from flask import jsonify, request
+from flask import jsonify, request, Response
 
 from controller.healthCheckController import HealthCheckController
 from utils import commons
@@ -31,20 +31,25 @@ class HealthCheckOtherResource(Resource):
 
     @classmethod
     def api_health_check(cls):
+        if request.args or request.form:
+            print(request.args)
+            return Response(status=400)
+
         if request.method == "GET" and request.get_data():
-            return jsonify(), 400
+            return Response(status=400)
 
         if request.method != 'GET':
-            return 405
+            return Response(status=405)
+
 
         res = HealthCheckController.add()
 
         if res['code'] != RET.OK:
             # return jsonify(code=res['code']), 503
-            return jsonify(), 503
+            return Response(status=503)
 
         if res['code'] == RET.OK:
-            return jsonify(), 200
+            return Response(status=200)
 
 
         # return jsonify(code=res['code'])

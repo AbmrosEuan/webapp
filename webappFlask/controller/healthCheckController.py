@@ -28,7 +28,7 @@ class HealthCheckController(HealthCheck,BaseModel):
         
         try:
             model = HealthCheck(
-                CheckID=CheckID,
+                # CheckID=CheckID,
                 Datetime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 
             )

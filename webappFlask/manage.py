@@ -6,7 +6,7 @@
 """
 
 from app import create_app
-from flask import request, jsonify, g
+from flask import request, jsonify, g, Response
 from utils.response_code import RET
 
 # 创建flask的app对象
@@ -28,8 +28,11 @@ def user_validation():
 
     if not request.endpoint: # 如果请求点为空
         return jsonify(code=RET.URLNOTFOUND, message="url not found123", error="url not found"), 405
-    if request.endpoint == 'healthCheck.Healthz' and request.method != 'GET':
-        return jsonify(code=RET.URLNOTFOUND, message="url not found123", error="url not found"), 405
+    if request.endpoint == 'healthCheck.Healthz':
+        if  request.method != 'GET':
+            return Response(status=405)
+        if request.content_length is not None and request.content_length > 0:
+            return Response(status=400)
         
 # @app.before_request
 # def user_require_token():
