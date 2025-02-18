@@ -14,6 +14,10 @@ sudo apt-get upgrade -y
 echo "Installing MySQL server..."
 sudo apt-get install -y mysql-server
 
+# 启动 MySQL 服务 | Start MySQL service.
+echo "Starting MySQL service..."
+sudo systemctl start mysql
+
 # 4. 在 MySQL 中创建数据库 csye6225-webapp | 4. Create the database 'csye6225-webapp' in MySQL.
 # 使用 sudo 调用 mysql 命令行工具执行 SQL 语句 | Use sudo to run the mysql command-line tool to execute SQL.
 echo "Creating MySQL database 'csye6225-webapp'..."
