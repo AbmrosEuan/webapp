@@ -7,6 +7,8 @@ on:
       - develop
 
 jobs:
+
+  
   run-tests:
     name: Run test.py
     runs-on: ubuntu-latest
@@ -14,6 +16,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: SetUp Environment
+        run: setup.sh
 
       - name: Setup Python
         uses: actions/setup-python@v4
