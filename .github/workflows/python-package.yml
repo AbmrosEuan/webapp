@@ -18,8 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: SetUp Environment
-        run: ｜
-          chmod +x ./setup.sh && ./setup.sh
+        run: chmod +x ./setup.sh && ./setup.sh
         
 
       - name: Setup Python
