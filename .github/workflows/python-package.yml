@@ -39,7 +39,8 @@ jobs:
           python-version: '3.10'
 
       - name: Check mysql status
-        run: mysqladmin -h 127.0.0.1 -P 3306 ping
+        run: ss -tln | grep 3306
+
 
       - name: Install dependencies and Run tests
         env:
@@ -49,7 +50,7 @@ jobs:
          WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
          WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
          WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
-        run: |
+        run: | 
           python -m venv venv
           source venv/bin/activate
           pip install --upgrade pip
