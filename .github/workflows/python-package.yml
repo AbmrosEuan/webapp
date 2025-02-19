@@ -7,18 +7,16 @@ on:
       - develop
 
 jobs:
-
-
   run-tests:
     name: Run test.py
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       - name: SetUp MySQL
-      - uses: mirromutth/mysql-action@v1.1
+        uses: mirromutth/mysql-action@v1.1
         with:
           host port: 3306 # Optional, default value is 3306. The port of host
           container port: 3306 # Optional, default value is 3306. The port of container
@@ -32,13 +30,13 @@ jobs:
 
 
       - name: Setup Python
-      - uses: actions/setup-python@v4
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
       - name: Install dependencies
-      - run: pip install -r webappFlask/requirements.txt
+        run: pip install -r webappFlask/requirements.txt
 
 
       - name: Run tests
-      - run: cd ./webappFlask && Python manage.py runserver && python webappFlask/test/test_healthz.py
+        run: cd ./webappFlask && Python manage.py runserver && python webappFlask/test/test_healthz.py
