@@ -19,6 +19,7 @@ jobs:
         run: echo ${{ secrets.MYSQL_PASSWORD }}
 
       - name: SetUp MySQL
+        if: github.event.pull_request.head.repo.fork == false
         uses: mirromutth/mysql-action@v1.1
         with:
           host port: 3306 # Optional, default value is 3306. The port of host
