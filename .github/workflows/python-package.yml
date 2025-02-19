@@ -15,22 +15,49 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: echo password
-        run: echo ${{ secrets.MYSQL_PASSWORD }}
+#      - name: echo password
+#        env:
+#          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+#          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+#          WEBAPP_SECRET_KEY: ${{ secrets.WEBAPP_SECRET_KEY }}
+#          WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
+#          WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
+#          WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
+#        run: echo ${{ secrets.MYSQL_PASSWORD }}
 
-      - name: SetUp MySQL
-        if: github.event.pull_request.head.repo.fork == false
-        uses: mirromutth/mysql-action@v1.1
+
+      - name: Setup MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        env:
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          WEBAPP_SECRET_KEY: ${{ secrets.WEBAPP_SECRET_KEY }}
+          WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
+          WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
+          WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
         with:
-            "host port": 3306
-            "container port": 3307
-            "character set server": "utf8"
-            "collation server": "utf8_general_ci"
-            "mysql version": "8.0"
-            "mysql database": ""
-            "mysql root password": ${{ secrets.MYSQL_PASSWORD }}
-            "mysql user": "root"
-            "mysql password": ${{ secrets.MYSQL_PASSWORD }}
+          mysql-version: '8.0'  # Specify your desired MySQL version [2, 6, 11]
+          root-password:  ${{ secrets.MYSQL_PASSWORD }} # Set the root password if needed [6, 11]
+          auto-start: 'true'
+
+      - name: Run your database tests
+
+        run: |
+          mysql -u root -p"mypassword" -e "CREATE DATABASE test_db;"
+
+#      - name: SetUp MySQL
+#        if: github.event.pull_request.head.repo.fork == false
+#        uses: mirromutth/mysql-action@v1.1
+#        with:
+#          host port: 3306 # Optional, default value is 3306. The port of host
+#          container port: 3306 # Optional, default value is 3306. The port of container
+#          character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
+#          collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
+#          mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
+#          mysql database: '' # Optional, default value is "test". The specified database which will be create
+#          mysql root password: ${{ secrets.MYSQL_PASSWORD }} # Required if "mysql user" is empty, default is empty. The root superuser password
+#          mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+#          mysql password: ${{ secrets.MYSQL_PASSWORD }} # Required if "mysql user" exists. The password for the "mysql user"
 
 
       - name: Setup Python
@@ -38,8 +65,6 @@ jobs:
         with:
           python-version: '3.10'
 
-#      - name: Check mysql status
-#        run: netstat -tuln | grep 3306
 
 
 
