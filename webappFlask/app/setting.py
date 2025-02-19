@@ -22,23 +22,33 @@ class Settings(object):
     def get_setting(cls, runMode):
         cls.CONFIG.read(os.path.join(CONFIG_DIR, runMode + '_config.conf'), encoding='utf-8')
 
+        # 秘钥-laptop
+        # cls.SECRET_KEY = cls.CONFIG['BASIC']['secret_key']
+        # cls.AES_SECRET_KEY = cls.CONFIG['AES']['secret_key']
+        # cls.PUBLIC_KEY = cls.CONFIG['RSA']['public_key']
+        # cls.PRIVATE_KEY = cls.CONFIG['RSA']['private_key']
+
         # 秘钥
-        cls.SECRET_KEY = cls.CONFIG['BASIC']['secret_key']
-        cls.AES_SECRET_KEY = cls.CONFIG['AES']['secret_key']
-        cls.PUBLIC_KEY = cls.CONFIG['RSA']['public_key']
-        cls.PRIVATE_KEY = cls.CONFIG['RSA']['private_key']
+        cls.SECRET_KEY = os.getenv('WEBAPP_SECRET_KEY')
+        cls.AES_SECRET_KEY = os.getenv('WEBAPP_AES_SECRET_KEY')
+        cls.PUBLIC_KEY = os.getenv('WEBAPP_PUBLIC_KEY')
+        cls.PRIVATE_KEY = os.getenv('WEBAPP_PRIVATE_KEY')
 
         # debug模式
         # DEBUG = DEVELOP_CONFIG.getboolean('STATIC_CONFIG', 'DEBUG')
 
-        # 数据库配置
+        # 数据库配置-laptop
         cls.DIALECT = cls.CONFIG['DATABASE']['dialect']
         cls.DRIVER = cls.CONFIG['DATABASE']['driver']
-        cls.USERNAME = cls.CONFIG['DATABASE']['username']
-        cls.PASSWORD = cls.CONFIG['DATABASE']['password']
         cls.HOST = cls.CONFIG['DATABASE']['host']
         cls.PORT = cls.CONFIG['DATABASE']['port']
         cls.DATABASE = cls.CONFIG['DATABASE']['database']
+
+        # cls.USERNAME = cls.CONFIG['DATABASE']['username']
+        # cls.PASSWORD = cls.CONFIG['DATABASE']['password']
+        cls.USERNAME = os.getenv('MYSQL_USERNAME')
+        cls.PASSWORD = os.getenv('MYSQL_PASSWORD')
+        print(cls.USERNAME, cls.PASSWORD, cls.PRIVATE_KEY)
 
         cls.SQLALCHEMY_DATABASE_URI = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
             cls.DIALECT, cls.DRIVER, cls.USERNAME, parse.quote_plus(cls.PASSWORD), cls.HOST, cls.PORT, cls.DATABASE)
