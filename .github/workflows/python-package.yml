@@ -1,4 +1,4 @@
-name: Run Tests
+name: Test webapp
 
 on:
   pull_request:
@@ -7,19 +7,35 @@ on:
       - develop
 
 jobs:
-
-  
-  run-tests:
-    name: Run test.py
+  tests:
+    name: webapp test
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+         image: mysql:8.0
+         env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD}}
+
+         ports:
+           - 3306: 3306
+         options: >-
+           --health-cmd "mysqladmin ping --silent"
+           --health-interval 10s
+           --health-timeout 5s
+           --health-retries 3
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: SetUp Environment
-        run: chmod +x ./setup.sh && ./setup.sh
-        
+      - name: Starting MySQL Service...
+        run: |
+          echo "等待 MySQL 服务启动..."
+          while ! mysqladmin ping -h 127.0.0.1 -P 3306 --silent; do
+            sleep 5
+          done
+          echo "MySQL 启动成功！"
 
       - name: Setup Python
         uses: actions/setup-python@v4
