@@ -48,4 +48,4 @@ jobs:
 
 
       - name: Run tests
-        run: pwd && cd ./webappFlask && python manage.py runserver && python webappFlask/test/test_healthz.py
+        run: pwd && cd ./webappFlask && pip list && python manage.py runserver && python webappFlask/test/test_healthz.py
