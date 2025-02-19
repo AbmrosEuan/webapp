@@ -43,7 +43,8 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install --upgrade pip
-          pip install -r webappFlask/requirements.txt
+          pip3 install -r webappFlask/requirements.txt
+
 
 
       - name: Run tests
