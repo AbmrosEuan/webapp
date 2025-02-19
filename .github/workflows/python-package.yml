@@ -43,7 +43,7 @@ jobs:
       - name: Run your database tests
 
         run: |
-          mysql -u root -p ${{ secrets.MYSQL_PASSWORD }} -e "CREATE DATABASE test_db;"
+          mysql -u root -p"${{ secrets.MYSQL_PASSWORD }}" -e "CREATE DATABASE test_db;"
 
 #      - name: SetUp MySQL
 #        if: github.event.pull_request.head.repo.fork == false
