@@ -179,5 +179,5 @@ cython_debug/
 #/webappFlask/dockerfile.bak
 #/webappFlask/gunicorn.py
 
-/webappFlask/config/
+#/webappFlask/config/
 *.env
