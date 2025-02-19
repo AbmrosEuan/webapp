@@ -128,7 +128,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+webapp.env
 .venv
 env/
 venv/
@@ -180,3 +180,4 @@ cython_debug/
 #/webappFlask/gunicorn.py
 
 /webappFlask/config/
+*.env
