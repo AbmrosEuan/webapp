@@ -83,7 +83,7 @@ jobs:
           pip install -r ./webappFlask/requirements.txt && pwd && ls -al && cd ./webappFlask && pip list
           pip install flask-sqlalchemy
           
-          python3 manage.py runserver
+          python3 manage.py runserver &
           sleep 5
           python webappFlask/test/test_healthz.py
 
