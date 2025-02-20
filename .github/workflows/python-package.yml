@@ -80,4 +80,8 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install --upgrade pip
-          pip3 install -r webappFlask/requirements.txt && pwd && cd ./webappFlask && pip list && python manage.py runserver && python webappFlask/test/test_healthz.py
+          pip3 install -r webappFlask/requirements.txt && pwd && cd ./webappFlask && pip list && python manage.py runserver
+      - name: Run Test
+        run:  |
+              sleep 5
+              python webappFlask/test/test_healthz.py
