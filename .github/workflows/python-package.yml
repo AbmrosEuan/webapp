@@ -81,7 +81,7 @@ jobs:
           source venv/bin/activate
           pip install --upgrade pip
           pip install -r webappFlask/requirements.txt && pwd && cd ./webappFlask && pip list
-          pip install sqlalchemy
+          pip install flask-sqlalchemy
       - name: Run server
         run:  |
               pwd
