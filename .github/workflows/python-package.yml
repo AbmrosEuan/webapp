@@ -86,7 +86,7 @@ jobs:
               pwd
               ls -al
               cd ./webappFlask
-              python3 manage.py runserver
+              python manage.py runserver
 
       - name: Run Test
         run:  |
