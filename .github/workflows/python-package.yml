@@ -85,7 +85,7 @@ jobs:
           
           python3 manage.py runserver &
           sleep 5
-          python ./test/test_healthz.py
+          pytest ./test/test_healthz.py
 
 #
 #      - name: Run Test
