@@ -8,7 +8,7 @@ BASE_URL = "http://127.0.0.1:8080/healthz"
 def test_get_request():
     # 无参数测试
     response = requests.get(BASE_URL)
-    assert response.status_code == 100
+    assert response.status_code == 200
     assert len(response.content) == 0
 
     # 带参数测试
