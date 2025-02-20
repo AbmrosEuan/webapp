@@ -58,6 +58,7 @@ def create_app(run_mode):
     # 利用Flask_session将数据保存的session中
     Session(app)
 
+
     # 调用resource层中定义的方法，初始化所有路由(注册)蓝图
     from api_1_0 import init_router
     init_router(app)
