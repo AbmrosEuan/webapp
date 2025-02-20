@@ -80,16 +80,16 @@ jobs:
           python3 -m venv venv
           source venv/bin/activate
           pip install --upgrade pip
-          pip install -r webappFlask/requirements.txt && pwd && cd ./webappFlask && pip list
+          pip install -r ./webappFlask/requirements.txt && pwd && cd ./webappFlask && pip list
           pip install flask-sqlalchemy
-      - name: Run server
-        run:  |
-              pwd
-              ls -al
-              cd ./webappFlask
-              python manage.py runserver
+          cd ./webappFlask
+          
+          python3 manage.py runserver
+          sleep 5
+          python webappFlask/test/test_healthz.py
 
-      - name: Run Test
-        run:  |
-              sleep 5
-              python webappFlask/test/test_healthz.py
+#
+#      - name: Run Test
+#        run:  |
+#              sleep 5
+#              python webappFlask/test/test_healthz.py
