@@ -80,9 +80,8 @@ jobs:
           python3 -m venv venv
           source venv/bin/activate
           pip install --upgrade pip
-          pip install -r ./webappFlask/requirements.txt && pwd && cd ./webappFlask && pip list
+          pip install -r ./webappFlask/requirements.txt && pwd && ls -al && cd ./webappFlask && pip list
           pip install flask-sqlalchemy
-          cd ./webappFlask
           
           python3 manage.py runserver
           sleep 5
