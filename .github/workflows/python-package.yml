@@ -82,7 +82,9 @@ jobs:
           pip install --upgrade pip
           pip3 install -r webappFlask/requirements.txt && pwd && cd ./webappFlask && pip list
       - name: Run server
-        run:  python manage.py runserver
+        run:  |
+              pwd
+              python manage.py runserver
 
       - name: Run Test
         run:  |
