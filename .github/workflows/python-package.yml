@@ -15,22 +15,49 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: echo password
-        run: echo ${{ secrets.MYSQL_PASSWORD }}
+#      - name: echo password
+#        env:
+#          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+#          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+#          WEBAPP_SECRET_KEY: ${{ secrets.WEBAPP_SECRET_KEY }}
+#          WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
+#          WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
+#          WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
+#        run: echo ${{ secrets.MYSQL_PASSWORD }}
 
-      - name: SetUp MySQL
-        if: github.event.pull_request.head.repo.fork == false
-        uses: mirromutth/mysql-action@v1.1
+
+      - name: Setup MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        env:
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          WEBAPP_SECRET_KEY: ${{ secrets.WEBAPP_SECRET_KEY }}
+          WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
+          WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
+          WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
         with:
-          host port: 3306 # Optional, default value is 3306. The port of host
-          container port: 3306 # Optional, default value is 3306. The port of container
-          character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
-          collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
-          mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
-          mysql database: '' # Optional, default value is "test". The specified database which will be create
-          mysql root password: ${{ secrets.MYSQL_PASSWORD }} # Required if "mysql user" is empty, default is empty. The root superuser password
-          mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-          mysql password: ${{ secrets.MYSQL_PASSWORD }} # Required if "mysql user" exists. The password for the "mysql user"
+          mysql-version: '8.0'  # Specify your desired MySQL version [2, 6, 11]
+          root-password:  ${{ secrets.MYSQL_PASSWORD }} # Set the root password if needed [6, 11]
+          auto-start: 'true'
+
+      - name: Run your database tests
+
+        run: |
+          mysql -u root -p"${{ secrets.MYSQL_PASSWORD }}" -e "CREATE DATABASE test_db;"
+
+#      - name: SetUp MySQL
+#        if: github.event.pull_request.head.repo.fork == false
+#        uses: mirromutth/mysql-action@v1.1
+#        with:
+#          host port: 3306 # Optional, default value is 3306. The port of host
+#          container port: 3306 # Optional, default value is 3306. The port of container
+#          character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
+#          collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
+#          mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
+#          mysql database: '' # Optional, default value is "test". The specified database which will be create
+#          mysql root password: ${{ secrets.MYSQL_PASSWORD }} # Required if "mysql user" is empty, default is empty. The root superuser password
+#          mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+#          mysql password: ${{ secrets.MYSQL_PASSWORD }} # Required if "mysql user" exists. The password for the "mysql user"
 
 
       - name: Setup Python
@@ -38,14 +65,30 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
-        run: |
-          python -m venv venv
+
+
+
+      - name: Install dependencies and Run tests
+        env:
+         MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+         MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+         WEBAPP_SECRET_KEY: ${{ secrets.WEBAPP_SECRET_KEY }}
+         WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
+         WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
+         WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
+        run: | 
+          python3 -m venv venv
           source venv/bin/activate
           pip install --upgrade pip
-          pip3 install -r webappFlask/requirements.txt
+          pip install -r ./webappFlask/requirements.txt && pwd && ls -al && cd ./webappFlask && pip list
+          pip install flask-sqlalchemy
+          
+          python3 manage.py runserver &
+          sleep 5
+          pytest ./test/test_healthz.py
 
-
-
-      - name: Run tests
-        run: pwd && cd ./webappFlask && python manage.py runserver && python webappFlask/test/test_healthz.py
+#
+#      - name: Run Test
+#        run:  |
+#              sleep 5
+#              python webappFlask/test/test_healthz.py
