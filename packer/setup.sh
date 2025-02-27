@@ -54,21 +54,21 @@ sudo apt install python3.12-venv -y
 sudo apt-get clean
 
 echo "Creating python venv..."
-sudo -u csye6225_user -s
+
 echo $(pwd)
 cd /opt/csye6225/webappFlask
 echo $(pwd)
 echo $(ls -al)
 
-
-echo$(whoami)
-sudo -u csye6225_user -s && python3 -m venv venv
-echo$(whoami)
+sudo -u csye6225_user  python3 -m venv venv
 echo $(ls -al)
-
-source venv/bin/activate && pip install -r ./requirements.txt
+sudo -u csye6225_user bash -c "
+    source venv/bin/activate &&
+    pip install -r ./requirements.txt
+"
+#source venv/bin/activate && pip install -r ./requirements.txt
 
 echo "Starting webapp..."
-python ./manage.py runserver
+sudo -u csye6225_user python ./manage.py runserver
 
 echo "Setup complete."
