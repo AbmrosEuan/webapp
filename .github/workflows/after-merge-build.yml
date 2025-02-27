@@ -127,15 +127,10 @@ jobs:
       - name: Verify AWS CLI
         run: aws s3 ls
 
-      - name: Packer prepare
+      - name: Validate packer and build
         run: |
           tar -xzvf ready2build.tar.gz
           cd packer
-          pwd
-          ls -al
-
-      - name: Validate packer
-        run: |
           pwd
           ls -al
           packer init machine-image.pkr.hcl
