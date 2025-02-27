@@ -60,7 +60,7 @@ cd /opt/csye6225/webappFlask
 echo $(pwd)
 echo $(ls -al)
 
-sudo python -m venv venv
+sudo python3 -m venv venv
 echo $(ls -al)
 source venv/bin/activate && pip install -r ./requirements.txt
 
