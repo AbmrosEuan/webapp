@@ -23,10 +23,11 @@ jobs:
         run: |
           pwd
           cd ./packer
-          packer init machine-image.pkr
-          packer fmt -check machine-image.pkr
+          
+          packer init machine-image.pkr.hcl
+          packer fmt -check machine-image.pkr.hcl
 
       - name: Run packer validate
         id: validate
         run: |
-          packer validate machine-image.pkr
+          packer validate machine-image.pkr.hcl
