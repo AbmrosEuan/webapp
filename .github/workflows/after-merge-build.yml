@@ -41,7 +41,7 @@ jobs:
         run: |
           pwd
           ls -al
-          cat <<EOF > webapp/webappFlask/app/webapp.env
+          cat <<EOF > ./webappFlask/app/webapp.env
           MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}
           MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
           WEBAPP_SECRET_KEY=${{ secrets.WEBAPP_SECRET_KEY }}
@@ -54,7 +54,7 @@ jobs:
         run: |
           pwd
           ls -al
-          ls -l webapp/webappFlask/app && cat webapp/webappFlask/app/webapp.env | grep -v 'PRIVATE_KEY'
+          cat ./webappFlask/app/webapp.env | grep -v 'MYSQL_USERNAME'
 
 
       - name: 4.Install dependencies and Run tests
