@@ -60,8 +60,12 @@ cd /opt/csye6225/webappFlask
 echo $(pwd)
 echo $(ls -al)
 
-python3 -m venv venv
+
+echo$(whoami)
+sudo -u csye6225_user -s && python3 -m venv venv
+echo$(whoami)
 echo $(ls -al)
+
 source venv/bin/activate && pip install -r ./requirements.txt
 
 echo "Starting webapp..."
