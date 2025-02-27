@@ -17,8 +17,7 @@ sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password passwor
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password 12345678'
 
 sudo apt-get install -y mysql-server
-sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '12345678'; FLUSH PRIVILEGES;"
-
+sudo mysql -u root -p'12345678' -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '12345678'; FLUSH PRIVILEGES;"
 
 # 4.Ensure MySQL is enabled to start on boot
 # 启动 MySQL 服务 | Start MySQL service.
@@ -43,8 +42,8 @@ ls -ld /home/csye6225_user/
 
 
 # unzip webapp.tar.gz
-sudo cd /opt/csye6225/
-sudo tar -xzvf /opt/csye6225/webappFlask.tar.gz
+cd /opt/csye6225
+tar -xzvf /opt/csye6225/webappFlask.tar.gz
 
 # make sure artifacts  must be owned by the user csye6225 and group csye6225
 sudo chown -R csye6225_user:csye6225  /opt/csye6225/webappFlask
