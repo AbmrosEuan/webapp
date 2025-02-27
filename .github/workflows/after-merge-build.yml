@@ -2,14 +2,15 @@ name: Build and Deploy Custom Image
 
 on:
   pull_request:
-    types: [closed]
-    branches:
-      - main
+    types:
+      - closed
 
 jobs:
   run-tests-buildArtifact:
     name: Run Integration Tests
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
     steps:
       - name: 1.Checkout repository
         uses: actions/checkout@v3
