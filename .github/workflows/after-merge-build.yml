@@ -96,22 +96,8 @@ jobs:
         with:
           name: ready2build-artifact
           path: ready2build.zip
-
-#  build-artifact:
-#      name: Build Application Artifact
-#      runs-on: ubuntu-latest
-#      needs: run-tests
-#      steps:
-#        - name: Checkout Repository
-#          uses: actions/checkout@v3
-#
-#        - name: Build Application Flask WebApp
-#          run: |
-#            pwd
-#            ls -al
-
   
-
+  # Build Custom Images
   build-aws-image:
     name: Build AWS Image
     runs-on: ubuntu-latest
@@ -137,13 +123,18 @@ jobs:
         run: | 
           pwd
           ls -al
+      
 
-#      - name: Configure AWS CLI
-#        run: |
-#          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          aws configure set region us-east-1
-#
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_github_action }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_github_action }}
+
+      - name: Verify AWS CLI
+        run: aws s3 ls
+
 #      - name: Build AWS Image with Packer
 #        run: |
 #          packer init packer/
