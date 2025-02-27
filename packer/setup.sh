@@ -42,27 +42,27 @@ sudo useradd -m -g csye6225 -s /usr/sbin/nologin csye6225_user || echo "User alr
 ls -ld /home/csye6225_user/
 
 
-# unzip webapp.tar.gz/.zip
+# unzip webapp.tar.gz
 sudo cd /opt/csye6225/
-ls
-#sudo tar -xzvf /opt/csye6225/webapp.tar.gz -C ./
-sudo unzip /opt/csye6225/webapp.zip
+sudo tar -xzvf /opt/csye6225/webappFlask.tar.gz
 
 # make sure artifacts  must be owned by the user csye6225 and group csye6225
-sudo chown -R csye6225_user:csye6225  /opt/csye6225/webapp
+sudo chown -R csye6225_user:csye6225  /opt/csye6225/webappFlask
 
 #setup python environment
-sudo cd /opt/csye6225/webapp
-sudo pwd
+pwd
 sudo apt install python3.12-venv -y
 sudo apt-get clean
 
 echo "Creating python venv..."
-python3 -m venv env
+sudo -u csye6225_user -s
+cd /opt/csye6225/webappFlask
+
+python3 -m venv venv
 source venv/bin/activate
-pip install -r ./webappFlask/requirements.txt
+pip install -r ./requirements.txt
 
 echo "Starting webapp..."
-python ./webappFlask/manage.py runserver
+python ./manage.py runserver
 
 echo "Setup complete."
