@@ -71,18 +71,13 @@ jobs:
           pytest ./test/test_healthz.py
 
 
-      - name: 5.Install zip
-        run: |
-         sudo apt-get update
-         sudo apt install unzip
-
 
       - name: 6.Build-Artifact
         run: |
           pwd
           ls -al
-          zip -r webappFlask.zip webappFlask
-          zip -r ready2build.zip webappFlask.zip packer
+          tar -cvf webappFlask.tar.gz webappFlask
+          tar -cvf ready2build.tar.gz webappFlask.tar.gz packer
           ls -al
           ls -al webappFlask/
           
@@ -91,11 +86,11 @@ jobs:
         run: ls -lh ready2build.zip
 
 
-      - name: 8.Upload webapp.zip as Artifact
+      - name: 8.Upload webapp.tar.gz as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ready2build-artifact
-          path: ready2build.zip
+          path: ready2build.tar.gz
   
   # Build Custom Images
   build-aws-image:
@@ -130,6 +125,12 @@ jobs:
 
       - name: Verify AWS CLI
         run: aws s3 ls
+
+      - name: Packer prepare
+        run: |
+          tar -xzvf ready2build.tar.gz
+          ls -al
+          
 
 #      - name: Build AWS Image with Packer
 #        run: |
