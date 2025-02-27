@@ -10,22 +10,22 @@ packer {
 
 
 variable "aws_region" {
-  type = string
+  type    = string
   default = "us-east-1"
 }
 
 variable "source_ami" {
-  type = string
+  type    = string
   default = "ami-04b4f1a9cf54c11d0"
 }
 
 variable "ssh_username" {
-  type = string
+  type    = string
   default = "ubuntu"
 }
 
 variable "subnet_id" {
-  type = string
+  type    = string
   default = "subnet-09550cd1fa139900a"
 }
 
@@ -37,9 +37,9 @@ variable "subnet_id" {
 
 
 source "amazon-ebs" "my-aws-ami" {
-  region            = "${var.aws_region}"
-  ami_name          = "csye6225_app_${formatdate("YYY_MM_DD", timestamp())}"
-  ami_description   = "AMI for csye6225"
+  region          = "${var.aws_region}"
+  ami_name        = "csye6225_app_${formatdate("YYYY_MM_DD", timestamp())}"
+  ami_description = "AMI for csye6225"
 
   ami_regions = [
     "us-east-1",
@@ -47,13 +47,13 @@ source "amazon-ebs" "my-aws-ami" {
 
   aws_polling {
     delay_seconds = 120
-    max_attempts = 50
+    max_attempts  = 50
   }
 
-  instance_type    = "t2.micro"
-  source_ami       = "${var.source_ami}"
-  ssh_username     = "${var.ssh_username}"
-  subnet_id        = "${var.subnet_id}"
+  instance_type = "t2.micro"
+  source_ami    = "${var.source_ami}"
+  ssh_username  = "${var.ssh_username}"
+  subnet_id     = "${var.subnet_id}"
 
   launch_block_device_mappings {
     delete_on_termination = true
@@ -69,14 +69,15 @@ source "amazon-ebs" "my-aws-ami" {
 
 
 build {
-  source = [
-    "source.amazon-ebs.my-aws-ami", 
+  sources = [
+    "source.amazon-ebs.my-aws-ami",
     # "source.csye6225-app-custom-image",
   ]
 
   provisioner "shell" {
     inline = [
       "sudo mkdir -p /opt/csye6225",
+      "sudo chown -R ubuntu:ubuntu /opt/csye6225"
     ]
   }
   # copy webapp.zip
@@ -91,6 +92,6 @@ build {
       "CHECKPOINT_DISABLE=1",
     ]
 
-    script = "setup.sh",
+    script = "setup.sh"
   }
 }
