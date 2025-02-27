@@ -18,7 +18,7 @@ jobs:
         with:
           version: 1.12.0
 
-      - name: Run packer fmt check
+      - name: Run packer fmt check and validate
         id: fmt
         run: |
           cd ./packer
@@ -26,8 +26,6 @@ jobs:
           ls -al
           packer init machine-image.pkr.hcl
           packer fmt -check machine-image.pkr.hcl
-
-      - name: Run packer validate
-        id: validate
-        run: |
           packer validate machine-image.pkr.hcl
+
+
