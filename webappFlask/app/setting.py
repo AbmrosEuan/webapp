@@ -6,8 +6,14 @@
 """
 
 import os
+from dotenv import load_dotenv, find_dotenv
 from configparser import ConfigParser
 from urllib import parse
+
+# load secret
+env_path = "./webapp.env"
+
+load_dotenv(find_dotenv(env_path))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

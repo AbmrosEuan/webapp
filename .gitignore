@@ -128,7 +128,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-webapp.env
+webappFlask/webapp.env
 .venv
 env/
 venv/
