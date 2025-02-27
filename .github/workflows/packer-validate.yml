@@ -22,6 +22,7 @@ jobs:
         id: fmt
         run: |
           pwd
+          packer init 
           packer fmt -check -recursive ./packer
 
       - name: Run packer validate
