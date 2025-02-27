@@ -69,6 +69,6 @@ sudo -u csye6225_user bash -c "
 #source venv/bin/activate && pip install -r ./requirements.txt
 
 echo "Starting webapp..."
-python ./manage.py runserver
+source venv/bin/activate && python ./manage.py runserver
 
 echo "Setup complete."
