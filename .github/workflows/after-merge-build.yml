@@ -127,6 +127,9 @@ jobs:
       - name: Verify AWS CLI
         run: aws s3 ls
 
+      - name: Verify AWS Credentials
+        run: aws sts get-caller-identity
+
       - name: Validate packer and build
         run: |
           tar -xzvf ready2build.tar.gz
