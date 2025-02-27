@@ -36,6 +36,7 @@ variable "subnet_id" {
 
 
 
+
 source "amazon-ebs" "my-aws-ami" {
   region          = "${var.aws_region}"
   ami_name        = "csye6225_app_${formatdate("YYYY_MM_DD", timestamp())}"
@@ -82,8 +83,8 @@ build {
   }
   # copy webapp.zip
   provisioner "file" {
-    source      = "webapp.zip"
-    destination = "/opt/csye6225/webapp.zip"
+    source      = "webappFlask.tar.gz"
+    destination = "/opt/csye6225/webappFlask.tar.gz"
   }
 
   provisioner "shell" {

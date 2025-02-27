@@ -133,6 +133,12 @@ jobs:
           cd packer
           pwd
           ls -al
+
+      - name: Validate packer
+        run: |
+          packer fmt machine-image.pkr.hcl
+          packer validate
+          packer build machine-image.pkr.hcl
           
 
 #      - name: Build AWS Image with Packer
