@@ -58,11 +58,12 @@ sudo -u csye6225_user -s
 echo $(pwd)
 cd /opt/csye6225/webappFlask
 echo $(pwd)
+echo $(ls -al)
 
-
-python3 -m venv venv
+sudo python3 -m venv venv
+echo $(ls -al)
 source venv/bin/activate
-pip install -r ./requirements.txt
+sudo pip install -r ./requirements.txt
 
 echo "Starting webapp..."
 python ./manage.py runserver
