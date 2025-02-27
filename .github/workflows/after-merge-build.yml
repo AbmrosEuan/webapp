@@ -93,7 +93,7 @@ jobs:
       - name: 8.Upload webapp.zip as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ready2build-zip
+          name: ready2build-artifact
           path: ready2build.zip
 
 #  build-artifact:
