@@ -21,9 +21,9 @@ jobs:
       - name: Run packer fmt check
         id: fmt
         run: |
-          pwd
           cd ./packer
-          
+          pwd
+          ls -al
           packer init machine-image.pkr.hcl
           packer fmt -check machine-image.pkr.hcl
 
