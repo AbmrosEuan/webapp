@@ -41,9 +41,9 @@ sudo useradd -m -g csye6225 -s /usr/sbin/nologin csye6225_user || echo "User alr
 ls -ld /home/csye6225_user/
 
 
-# unzip webapp.tar.gz
+echo "Unziping webapp.tar.gz ..."
 cd /opt/csye6225
-tar -xzvf /opt/csye6225/webappFlask.tar.gz
+sudo tar -xzvf /opt/csye6225/webappFlask.tar.gz
 
 # make sure artifacts  must be owned by the user csye6225 and group csye6225
 sudo chown -R csye6225_user:csye6225  /opt/csye6225/webappFlask
@@ -55,7 +55,10 @@ sudo apt-get clean
 
 echo "Creating python venv..."
 sudo -u csye6225_user -s
+echo $(pwd)
 cd /opt/csye6225/webappFlask
+echo $(pwd)
+
 
 python3 -m venv venv
 source venv/bin/activate
