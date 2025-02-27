@@ -82,8 +82,8 @@ jobs:
           ls -al webappFlask/
           
 
-      - name: 7.Verify Zip File
-        run: ls -lh ready2build.zip
+      - name: 7.Verify .tar.gz File
+        run: tar -tzf ready2build.tar.gz
 
 
       - name: 8.Upload webapp.tar.gz as Artifact
