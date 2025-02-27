@@ -1,0 +1,105 @@
+name: Build and Deploy Custom Image
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  run-tests:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1.Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        env:
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          WEBAPP_SECRET_KEY: ${{ secrets.WEBAPP_SECRET_KEY }}
+          WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
+          WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
+          WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
+        with:
+          mysql-version: '8.0'
+          root-password:  ${{ secrets.MYSQL_PASSWORD }}
+          auto-start: 'true'
+
+      - name: 2.Run database tests
+
+        run: |
+          mysql -u root -p"${{ secrets.MYSQL_PASSWORD }}" -e "CREATE DATABASE test_db;"
+
+      - name: 3.Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+
+      - name: 4.Install dependencies and Run tests
+        env:
+         MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+         MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+         WEBAPP_SECRET_KEY: ${{ secrets.WEBAPP_SECRET_KEY }}
+         WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
+         WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
+         WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
+        run: | 
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r ./webappFlask/requirements.txt && pwd && ls -al && cd ./webappFlask && pip list
+          pip install flask-sqlalchemy
+          
+          python3 manage.py runserver &
+          sleep 5
+          pytest ./test/test_healthz.py
+
+  build-artifact:
+      name: Build Application Artifact
+      runs-on: ubuntu-latest
+      needs: run-tests
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v3
+
+        - name: Build Application Flask WebApp
+          run: |
+            pwd
+            ls -al
+  
+
+  build-aws-image:
+    name: Build AWS Image
+    runs-on: ubuntu-latest
+    needs: build-artifact
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+#      - name: Download Artifact
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: webapp-artifact
+#          path: .
+
+      - name: Install Packer
+        run: |
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update && sudo apt-get install -y packer
+          packer # Verifying the Installation
+
+#      - name: Configure AWS CLI
+#        run: |
+#          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws configure set region us-east-1
+#
+#      - name: Build AWS Image with Packer
+#        run: |
+#          packer init packer/
+#          packer build -var 'artifact_path=webapp.zip' packer/aws.pkr.hcl
