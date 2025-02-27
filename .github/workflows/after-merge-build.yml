@@ -136,6 +136,9 @@ jobs:
           packer init machine-image.pkr.hcl
           packer fmt machine-image.pkr.hcl
           packer validate  machine-image.pkr.hcl
+          
+          aws ec2 describe-subnets --subnet-ids subnet-09550cd1fa139900a
+          
           packer build machine-image.pkr.hcl
           
 
