@@ -136,7 +136,9 @@ jobs:
 
       - name: Validate packer
         run: |
-          packer init  machine-image.pkr.hcl
+          pwd
+          ls -al
+          packer init machine-image.pkr.hcl
           packer fmt machine-image.pkr.hcl
           packer validate  machine-image.pkr.hcl
           packer build machine-image.pkr.hcl
