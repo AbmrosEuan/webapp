@@ -41,7 +41,7 @@ jobs:
         run: |
           pwd
           ls -al
-          cat <<EOF > webapp/app/webapp.env
+          cat <<EOF > webapp/webappFlask/app/webapp.env
           MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}
           MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
           WEBAPP_SECRET_KEY=${{ secrets.WEBAPP_SECRET_KEY }}
