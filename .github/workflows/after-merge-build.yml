@@ -29,7 +29,6 @@ jobs:
           auto-start: 'true'
 
       - name: 2.Run database tests
-
         run: |
           mysql -u root -p"${{ secrets.MYSQL_PASSWORD }}" -e "CREATE DATABASE test_db;"
 
@@ -38,15 +37,35 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: 4.Create .env file
+        run: |
+          pwd
+          ls -al
+          cat <<EOF > webapp/webappFlask/app/webapp.env
+          MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+          WEBAPP_SECRET_KEY=${{ secrets.WEBAPP_SECRET_KEY }}
+          WEBAPP_AES_SECRET_KEY=${{ secrets.WEBAPP_AES_SECRET_KEY }}
+          WEBAPP_PUBLIC_KEY=${{ secrets.WEBAPP_PUBLIC_KEY }}
+          WEBAPP_PRIVATE_KEY=${{ secrets.WEBAPP_PRIVATE_KEY }}
+          EOF
+
+      - name: Verify .env
+        run: |
+          pwd
+          ls -al
+          ls -l webapp/webappFlask/app && cat webapp/webappFlask/app/webapp.env | grep -v 'PRIVATE_KEY'
+
 
       - name: 4.Install dependencies and Run tests
-        env:
-         MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-         MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-         WEBAPP_SECRET_KEY: ${{ secrets.WEBAPP_SECRET_KEY }}
-         WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
-         WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
-         WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
+#        env:
+#         MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+#         MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+#         WEBAPP_SECRET_KEY: ${{ secrets.WEBAPP_SECRET_KEY }}
+#         WEBAPP_AES_SECRET_KEY: ${{ secrets.WEBAPP_AES_SECRET_KEY }}
+#         WEBAPP_PUBLIC_KEY: ${{ secrets.WEBAPP_PUBLIC_KEY }}
+#         WEBAPP_PRIVATE_KEY: ${{ secrets.WEBAPP_PRIVATE_KEY }}
+
         run: | 
           python3 -m venv venv
           source venv/bin/activate
@@ -91,7 +110,7 @@ jobs:
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install -y packer
-          packer # Verifying the Installation
+          packer version  # Verifying the Installation
 
 #      - name: Configure AWS CLI
 #        run: |
