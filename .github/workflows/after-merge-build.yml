@@ -77,7 +77,8 @@ jobs:
           pwd
           ls -al
           tar -czvf webappFlask.tar.gz webappFlask
-          tar -czvf ready2build.tar.gz webappFlask.tar.gz packer
+          mv webappFlask.tar.gz  ./packer
+          tar -czvf ready2build.tar.gz packer
           ls -al
           ls -al webappFlask/
           
@@ -129,6 +130,8 @@ jobs:
       - name: Packer prepare
         run: |
           tar -xzvf ready2build.tar.gz
+          cd packer
+          pwd
           ls -al
           
 
