@@ -76,8 +76,8 @@ jobs:
         run: |
           pwd
           ls -al
-          tar -cvf webappFlask.tar.gz webappFlask
-          tar -cvf ready2build.tar.gz webappFlask.tar.gz packer
+          tar -czvf webappFlask.tar.gz webappFlask
+          tar -czvf ready2build.tar.gz webappFlask.tar.gz packer
           ls -al
           ls -al webappFlask/
           
