@@ -69,6 +69,10 @@ sudo -u csye6225_user bash -c "
 #source venv/bin/activate && pip install -r ./requirements.txt
 
 echo "Starting webapp..."
-source venv/bin/activate && python ./manage.py runserver
+#source venv/bin/activate && python ./manage.py runserver
+sudo cp webappFlask.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable <webappFlask>
+sudo sleep 5 && echo$(systemctl status <webappFlask>)
 
 echo "Setup complete."

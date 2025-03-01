@@ -1,0 +1,19 @@
+[Unit]
+Description=webappFlask-csye6225
+ConditionPathExists=/opt/csye6225/webappFlask
+After=network.target
+
+[Service]
+Type=simple
+User=csye6225_user
+Group=csye6225
+WorkingDirectory=/opt/csye6225/webappFlask
+ExecStart=/bin/bash -c 'source venv/bin/activate && python ./manage.py runserver'
+Restart=always
+RestartSec=3
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=csye6225
+
+[Install]
+WantedBy=multi-user.target
