@@ -159,7 +159,7 @@ jobs:
           
           
           echo "${{ secrets.GCP_CLI_KEY_PACKER }}" > /tmp/account.json
-          cat ${{ secrets.GCP_CLI_KEY_PACKER }}
           export GOOGLE_APPLICATION_CREDENTIALS="/tmp/account.json"
+          echo ${{ secrets.GCP_CLI_KEY_PACKER }}
           
           packer build machine-image.pkr.hcl
