@@ -142,7 +142,6 @@ jobs:
           gcloud info
           gcloud auth list
           gcloud config list
-          
 
       - name: Validate packer and build
         run: |
