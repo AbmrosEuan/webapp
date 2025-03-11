@@ -131,9 +131,9 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+        uses: google-github-actions/auth@v2
         with:
-          service_account_key: ${{ secrets.GCP_CLI_KEY_PACKER }}
+          credentials_json: ${{ secrets.GCP_CLI_KEY_PACKER }}
           project_id: csye6225-gcp-dev
 
       - name: Verify GCP CLI
