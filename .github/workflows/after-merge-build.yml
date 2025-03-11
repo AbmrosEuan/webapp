@@ -130,6 +130,19 @@ jobs:
       - name: Verify AWS Credentials
         run: aws sts get-caller-identity
 
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          service_account_key: ${{ secrets.GCP_CLI_KEY_PACKER }}
+          project_id: csye6225-gcp-dev
+
+      - name: Verify GCP CLI
+        run: |
+          gcloud info
+          gcloud auth list
+          gcloud config list
+          
+
       - name: Validate packer and build
         run: |
           tar -xzvf ready2build.tar.gz
@@ -144,9 +157,3 @@ jobs:
           export PACKER_LOG=1
           export PACKER_LOG_PATH="packer.log"
           packer build machine-image.pkr.hcl
-          
-
-#      - name: Build AWS Image with Packer
-#        run: |
-#          packer init packer/
-#          packer build -var 'artifact_path=webapp.zip' packer/aws.pkr.hcl
