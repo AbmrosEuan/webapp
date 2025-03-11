@@ -156,4 +156,10 @@ jobs:
           aws ec2 describe-subnets --subnet-ids subnet-09550cd1fa139900a
           export PACKER_LOG=1
           export PACKER_LOG_PATH="packer.log"
+          
+          
+          echo "${{ secrets.GCP_CLI_KEY_PACKER }}" > /tmp/account.json
+          cat ${{ secrets.GCP_CLI_KEY_PACKER }}
+          export GOOGLE_APPLICATION_CREDENTIALS="/tmp/account.json"
+          
           packer build machine-image.pkr.hcl
