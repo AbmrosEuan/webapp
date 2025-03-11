@@ -133,7 +133,7 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          service_account_key: ${{ secrets.GCP_CLI_KEY_PACKER }}
+          service_account_key: "${{ secrets.GCP_CLI_KEY_PACKER }}"
           project_id: csye6225-gcp-dev
           service_account: packer@csye6225-gcp-dev.iam.gserviceaccount.com
 
@@ -156,10 +156,5 @@ jobs:
           aws ec2 describe-subnets --subnet-ids subnet-09550cd1fa139900a
           export PACKER_LOG=1
           export PACKER_LOG_PATH="packer.log"
-          
-          
-#          echo "${{ secrets.GCP_CLI_KEY_PACKER }}" > /tmp/account.json
-#          export GOOGLE_APPLICATION_CREDENTIALS="/tmp/account.json"
-#          echo ${{ secrets.GCP_CLI_KEY_PACKER }}
           
           packer build machine-image.pkr.hcl
