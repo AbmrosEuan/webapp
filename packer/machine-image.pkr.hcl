@@ -4,11 +4,16 @@ packer {
       version = " >= 1.0.0, < 2.0.0"
       source  = "github.com/hashicorp/amazon"
     }
+
+    googlecompute = {
+      version = ">= 1.0.0, < 2.0.0"
+      source  = "github.com/hashicorp/googlecompute"
+    }
   }
 }
 
 
-
+# AWS variables
 variable "aws_region" {
   type    = string
   default = "us-east-1"
@@ -29,14 +34,47 @@ variable "subnet_id" {
   default = "subnet-09550cd1fa139900a"
 }
 
+
+# GCP variables
+variable "gcp_project_id" {
+  type    = string
+  default = "csye6225-gcp-dev"
+}
+
+variable "gcp_region" {
+  type    = string
+  default = "us-central1"
+}
+
+variable "gcp_zone" {
+  type    = string
+  default = "us-central1-a"
+}
+
+variable "gcp_source_image" {
+  type = string
+  # default = "ubuntu-2404-lts"
+  default = "ubuntu-2404-noble-amd64-v20250228"
+
+}
+
+variable "gcp_machine_type" {
+  type    = string
+  default = "e2-micro"
+}
+
+variable "gcp_subnet" {
+  type    = string
+  default = "default"
+}
+
 # variable "" {
 #   type = string
 #   default = ""
 # }
 
 
-
-
+# aws source
 source "amazon-ebs" "my-aws-ami" {
   region          = "${var.aws_region}"
   ami_name        = "csye6225_app_${formatdate("YYYY_MM_DD", timestamp())}"
@@ -64,15 +102,33 @@ source "amazon-ebs" "my-aws-ami" {
   }
 }
 
-# source "googlecompute" "csye6225-app-custom-image"{
-#   ...
-# }
+
+# gcp source
+source "googlecompute" "csye6225-app-custom-image" {
+  project_id   = var.gcp_project_id
+  region       = var.gcp_region
+  zone         = var.gcp_zone
+  source_image = var.gcp_source_image
+  machine_type = var.gcp_machine_type
+  image_name   = "csye6225-app-${formatdate("YYYYMMDD", timestamp())}"
+  image_family = "csye6225-app"
+  network      = "default"
+  ssh_username = "ubuntu"
+
+  disk_size = 10
+  disk_type = "pd-balanced"
+
+  # metadata = {
+  #   ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
+  # }
+}
+
 
 
 build {
   sources = [
     "source.amazon-ebs.my-aws-ami",
-    # "source.csye6225-app-custom-image",
+    "source.googlecompute.csye6225-app-custom-image"
   ]
 
   provisioner "shell" {

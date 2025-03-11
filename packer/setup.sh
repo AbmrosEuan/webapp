@@ -41,9 +41,9 @@ sudo useradd -m -g csye6225 -s /usr/sbin/nologin csye6225_user || echo "User alr
 ls -ld /home/csye6225_user/
 
 
-# unzip webapp.tar.gz
+echo "Unziping webapp.tar.gz ..."
 cd /opt/csye6225
-tar -xzvf /opt/csye6225/webappFlask.tar.gz
+sudo tar -xzvf /opt/csye6225/webappFlask.tar.gz
 
 # make sure artifacts  must be owned by the user csye6225 and group csye6225
 sudo chown -R csye6225_user:csye6225  /opt/csye6225/webappFlask
@@ -54,14 +54,28 @@ sudo apt install python3.12-venv -y
 sudo apt-get clean
 
 echo "Creating python venv..."
-sudo -u csye6225_user -s
-cd /opt/csye6225/webappFlask
 
-python3 -m venv venv
-source venv/bin/activate
-pip install -r ./requirements.txt
+echo $(pwd)
+cd /opt/csye6225/webappFlask
+echo $(pwd)
+echo $(ls -al)
+
+sudo -u csye6225_user  python3 -m venv venv
+echo $(ls -al)
+sudo -u csye6225_user bash -c "
+    source venv/bin/activate &&
+    pip install -r ./requirements.txt
+"
+#source venv/bin/activate && pip install -r ./requirements.txt
 
 echo "Starting webapp..."
-python ./manage.py runserver
+#source venv/bin/activate && python ./manage.py runserver
+sudo cp webappFlask.service /etc/systemd/system/
+
+sudo systemctl daemon-reload
+
+sudo systemctl enable webappFlask
+
+sudo sleep 5 && echo$(systemctl status webappFlask)
 
 echo "Setup complete."
