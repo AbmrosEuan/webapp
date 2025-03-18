@@ -14,4 +14,4 @@
 
 5.The following output means you run the project successfully.
 
-**(However, this project need config files, which include database password, to work correctly, but for safety reasons, I did not commit them to github repo)**
+**(However, this project need config files, which include database password, to work correctly, but for safety reasons, I did not commit them to github repo)**   
