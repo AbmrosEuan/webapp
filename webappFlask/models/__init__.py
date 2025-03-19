@@ -35,4 +35,9 @@ class BaseModel(db.Model):
 
     def _asdict(self):
         return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
-    
+
+
+from .healthCheck import HealthCheck
+from .fileInfo import FileInfo
+
+__all__ = ['db', 'BaseModel', 'HealthCheck', 'FileInfo']

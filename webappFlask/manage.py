@@ -6,7 +6,7 @@
 """
 
 from app import create_app
-from flask import request, jsonify, g, Response
+from flask import request, jsonify, g, Response, abort
 from utils.response_code import RET
 
 # 创建flask的app对象
@@ -15,25 +15,11 @@ app = create_app("develop")
 # 创建全站拦截器,每个请求之前做处理
 @app.before_request
 def user_validation():
-    print(request.endpoint)  # 方便跟踪调试
+    print("end point: " + str(request.endpoint))  # 方便跟踪调试
     print(request.method)
-    # for rule in app.url_map.iter_rules():
-    #     print(f"Rule: {rule}, Methods: {rule.methods}")
+    print(request.path)
 
 
-
-    print(f"Request endpoint: {request.endpoint}")
-    # print(f"Request method: {request.method}")
-    # print(f"Request URL: {request.url}")
-
-    if not request.endpoint: # 如果请求点为空
-        return jsonify(code=RET.URLNOTFOUND, message="url not found123", error="url not found"), 405
-    if request.endpoint == 'healthCheck.Healthz':
-        if  request.method != 'GET':
-            return Response(status=405)
-        if request.content_length is not None and request.content_length > 0:
-            return Response(status=400)
-        
 # @app.before_request
 # def user_require_token():
 #     # 不需要token验证的请求点列表
@@ -63,8 +49,7 @@ def user_validation():
 # 创建全站拦截器，每个请求之后根据请求方法统一设置返回头
 @app.after_request
 def process_response(response):
-    # allow_cors = ['OPTIONS', 'PUT', 'DELETE', 'GET', 'POST']
-    allow_cors = ['GET']
+    allow_cors = ['PUT', 'DELETE', 'GET', 'POST']
 
     if request.method in allow_cors:
         response.headers["Access-Control-Allow-Origin"] = '*'

@@ -31,26 +31,14 @@ class HealthCheckOtherResource(Resource):
 
     @classmethod
     def api_health_check(cls):
-        if request.args or request.form:
-            print(request.args)
-            return Response(status=400)
-
-        if request.method == "GET" and request.get_data():
-            return Response(status=400)
-
-        if request.method != 'GET':
-            return Response(status=405)
-
 
         res = HealthCheckController.add()
 
         if res['code'] != RET.OK:
-            # return jsonify(code=res['code']), 503
             return Response(status=503)
-
         if res['code'] == RET.OK:
             return Response(status=200)
 
 
-        # return jsonify(code=res['code'])
+
 
