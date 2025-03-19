@@ -128,7 +128,7 @@ source "googlecompute" "csye6225-app-custom-image" {
 build {
   sources = [
     "source.amazon-ebs.my-aws-ami",
-    "source.googlecompute.csye6225-app-custom-image"
+    # "source.googlecompute.csye6225-app-custom-image"
   ]
 
   provisioner "shell" {

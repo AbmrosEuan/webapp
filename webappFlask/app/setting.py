@@ -70,5 +70,10 @@ class Settings(object):
         # token的有效期,单位：秒
         cls.TOKEN_EXPIRES = int(cls.CONFIG['BASIC']['token_expires'])
 
+        # AWS confi
+        cls.AWS_S3_REGION_NAME =cls.CONFIG['AWS']['s3_region']
+        cls.AWS_S3_BUCKET_NAME = cls.CONFIG['AWS']['s3_bucket']
+        cls.AWS_S3_BASE_URL = f"https://{cls.AWS_S3_BUCKET_NAME}.s3.{cls.AWS_S3_REGION_NAME}.amazonaws.com"
+
         return cls
 

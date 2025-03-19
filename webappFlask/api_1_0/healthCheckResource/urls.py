@@ -2,21 +2,21 @@
 # -*- coding:utf-8 -*-
 
 from flask_restful import Api
+from flask import request
 
 from . import healthcheck_blueprint
-from api_1_0.healthCheckResource.healthCheckResource import HealthCheckResource
 from api_1_0.healthCheckResource.healthCheckOtherResource import HealthCheckOtherResource
 
 api = Api(healthcheck_blueprint)
 
-# api.add_resource(HealthCheckResource, '/healthCheck/<CheckID>', '/healthCheck', endpoint='HealthCheck')
-api.add_resource(HealthCheckResource, '/healthCheck/<CheckID>', '/healthCheck', endpoint='HealthCheck')
 
-
-
-@healthcheck_blueprint.route('/healthcheck/update/<CheckID>', methods=['PUT'], endpoint='HealthCheckUpdate')
-def update(CheckID):
-    return HealthCheckOtherResource.sensitive_update(CheckID)
+@healthcheck_blueprint.before_request
+def healthz_validation():
+    print('in health check ' + request.path)
+    if request.method != 'GET':
+        return '', 405
+    if len(request.args) > 0:
+        return '', 400
 
 @healthcheck_blueprint.route('/healthz', methods=['GET'], endpoint='Healthz')
 def healthz():
