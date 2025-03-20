@@ -46,18 +46,34 @@ class Settings(object):
         # 数据库配置-laptop
         cls.DIALECT = cls.CONFIG['DATABASE']['dialect']
         cls.DRIVER = cls.CONFIG['DATABASE']['driver']
-        cls.HOST = cls.CONFIG['DATABASE']['host']
+
         cls.PORT = cls.CONFIG['DATABASE']['port']
         cls.DATABASE = cls.CONFIG['DATABASE']['database']
 
-        # cls.USERNAME = cls.CONFIG['DATABASE']['username']
-        # cls.PASSWORD = cls.CONFIG['DATABASE']['password']
+
+
+
         cls.USERNAME = os.getenv('MYSQL_USERNAME')
         cls.PASSWORD = os.getenv('MYSQL_PASSWORD')
         print(cls.USERNAME, cls.PASSWORD, cls.PRIVATE_KEY)
 
+        # aws RDB
+        cls.ENVIRONMENT = os.getenv('ENVIRONMENT')
+        if cls.ENVIRONMENT == 'local':
+            cls.HOST = os.getenv('DB_HOST')
+
+        elif cls.ENVIRONMENT == 'server':
+            cls.HOST = os.getenv('DB_HOST')
+            cls.READER = os.getenv('DB_READER')
+            cls.SQLALCHEMY_BINDS = {
+                'reader': '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
+                    cls.DIALECT, cls.DRIVER, cls.USERNAME, parse.quote_plus(cls.PASSWORD), cls.READER, cls.PORT,
+                    cls.DATABASE)
+            }
+
         cls.SQLALCHEMY_DATABASE_URI = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
             cls.DIALECT, cls.DRIVER, cls.USERNAME, parse.quote_plus(cls.PASSWORD), cls.HOST, cls.PORT, cls.DATABASE)
+
 
         cls.SQLALCHEMY_TRACK_MODIFICATIONS = cls.CONFIG.getboolean('DATABASE', 'sqlalchemy_track_modifications')
 
@@ -71,8 +87,8 @@ class Settings(object):
         cls.TOKEN_EXPIRES = int(cls.CONFIG['BASIC']['token_expires'])
 
         # AWS confi
-        cls.AWS_S3_REGION_NAME =cls.CONFIG['AWS']['s3_region']
-        cls.AWS_S3_BUCKET_NAME = cls.CONFIG['AWS']['s3_bucket']
+        cls.AWS_S3_REGION_NAME =os.getenv('AWS_S3_REGION_NAME')
+        cls.AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
         cls.AWS_S3_BASE_URL = f"https://{cls.AWS_S3_BUCKET_NAME}.s3.{cls.AWS_S3_REGION_NAME}.amazonaws.com"
 
         return cls
