@@ -51,6 +51,7 @@ jobs:
           WEBAPP_PRIVATE_KEY=${{ secrets.WEBAPP_PRIVATE_KEY }}
           AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DB_HOST = localhost
           EOF
 
       - name: Verify .env
