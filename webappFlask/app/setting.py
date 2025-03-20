@@ -59,17 +59,17 @@ class Settings(object):
 
         # aws RDB
         cls.ENVIRONMENT = os.getenv('ENVIRONMENT')
-        if cls.ENVIRONMENT == 'local':
-            cls.HOST = os.getenv('DB_HOST')
 
-        elif cls.ENVIRONMENT == 'server':
-            cls.HOST = os.getenv('DB_HOST')
-            cls.READER = os.getenv('DB_READER')
-            cls.SQLALCHEMY_BINDS = {
-                'reader': '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
-                    cls.DIALECT, cls.DRIVER, cls.USERNAME, parse.quote_plus(cls.PASSWORD), cls.READER, cls.PORT,
-                    cls.DATABASE)
-            }
+        cls.HOST = os.getenv('DB_HOST')
+
+        # elif cls.ENVIRONMENT == 'server':
+        #     cls.HOST = os.getenv('DB_HOST')
+        #     cls.READER = os.getenv('DB_READER')
+        #     cls.SQLALCHEMY_BINDS = {
+        #         'reader': '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
+        #             cls.DIALECT, cls.DRIVER, cls.USERNAME, parse.quote_plus(cls.PASSWORD), cls.READER, cls.PORT,
+        #             cls.DATABASE)
+        #     }
 
         cls.SQLALCHEMY_DATABASE_URI = '{}+{}://{}:{}@{}:{}/{}?charset=utf8'.format(
             cls.DIALECT, cls.DRIVER, cls.USERNAME, parse.quote_plus(cls.PASSWORD), cls.HOST, cls.PORT, cls.DATABASE)
