@@ -76,7 +76,7 @@ jobs:
           ls -al
           sudo mkdir -p /var/log/csye6225/webapp_log && sudo touch /var/log/csye6225/webapp_log/flaskapp.log
           ls -al
-          sudo  chown -R runner:docker ./var/log/webapp
+          sudo  chown -R runner:docker ./
           ls -al
           python3 manage.py runserver &
           sleep 5
