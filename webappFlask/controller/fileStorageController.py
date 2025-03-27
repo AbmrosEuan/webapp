@@ -12,6 +12,7 @@ from sqlalchemy import or_
 from app import db
 from models.fileInfo import FileInfo
 from utils import commons
+from utils.cloudwatch_integration import metrics_timer
 from utils.response_code import RET, error_map_EN
 from utils.loggings import loggings
 from models import BaseModel
@@ -20,6 +21,7 @@ from models import BaseModel
 class FileStorageController(FileInfo, BaseModel):
 
     # add
+    @metrics_timer("db.query.S3file.add")
     @classmethod
     def add(cls, **kwargs):
 
@@ -50,6 +52,7 @@ class FileStorageController(FileInfo, BaseModel):
             db.session.close()
 
     # get
+    @metrics_timer("db.query.S3file.get")
     @classmethod
     def get(cls, **kwargs):
         try:
@@ -78,6 +81,7 @@ class FileStorageController(FileInfo, BaseModel):
             db.session.close()
 
     # delete
+    @metrics_timer("db.query.S3file.delete")
     @classmethod
     def delete(cls, **kwargs):
         try:
