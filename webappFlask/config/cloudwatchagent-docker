@@ -1,0 +1,22 @@
+docker run -d \
+  --name cloudwatch-agent \
+  -p 8125:8125/udp \
+  -v /Users/ay/AY/neu_study/info6225/csye6225project/webapp/webappFlask/config/cloud_watch_agent.json:/opt/aws/amazon-cloudwatch-agent/bin/default_linux_config.json \
+  -e AWS_ACCESS_KEY_ID=AKIAZPPF775J2XUVXFMV \
+  -e AWS_SECRET_ACCESS_KEY=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 \
+  amazon/cloudwatch-agent
+
+
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+  -a fetch-config \
+  -m onPrem \
+  -c file: /opt/aws/amazon-cloudwatch-agent/bin/config.json \
+  -s
+
+sudo nano /opt/aws/amazon-cloudwatch-agent/etc/common-config.toml
+
+  sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+  -a fetch-config \
+  -m onPrem \
+  -c file: /Users/ay/AY/neu_study/info6225/csye6225project/webapp/webappFlask/config/cloud_watch_agent.json \
+  -s

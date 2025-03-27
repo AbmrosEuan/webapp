@@ -91,5 +91,8 @@ class Settings(object):
         cls.AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
         cls.AWS_S3_BASE_URL = f"https://{cls.AWS_S3_BUCKET_NAME}.s3.{cls.AWS_S3_REGION_NAME}.amazonaws.com"
 
+        #Log config
+        cls.FLASK_APP_LOG = cls.CONFIG['LOG']['flask_log']
+
         return cls
 
