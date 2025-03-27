@@ -10,7 +10,7 @@ from flask import request, jsonify, g, Response, abort
 from utils.response_code import RET
 import logging
 
-logging.basicConfig(filename='var/log/webapp/flaskapp.log', level=logging.INFO)
+
 
 # 创建flask的app对象
 app = create_app("develop")

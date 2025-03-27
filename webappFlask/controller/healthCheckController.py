@@ -11,6 +11,7 @@ from sqlalchemy import or_
 from app import db
 from models.healthCheck import HealthCheck
 from utils import commons
+from utils.cloudwatch_integration import metrics_timer
 from utils.response_code import RET, error_map_EN
 from utils.loggings import loggings
 from models import BaseModel
@@ -20,6 +21,7 @@ class HealthCheckController(HealthCheck,BaseModel):
 
     # add
     @classmethod
+    @metrics_timer("db.query.healthz.add")
     def add(cls, **kwargs):
         # if request.method != "POST":
         #     return {"code": RET.METHODERR, "message": "Invalid method"}
@@ -49,6 +51,7 @@ class HealthCheckController(HealthCheck,BaseModel):
             db.session.close()
 
     # get
+    @metrics_timer("db.query.healthz.get")
     @classmethod
     def get(cls, **kwargs):
         try:
@@ -80,6 +83,7 @@ class HealthCheckController(HealthCheck,BaseModel):
             db.session.close()
 
     # delete
+    @metrics_timer("db.query.healthz.delete")
     @classmethod
     def delete(cls, **kwargs):
         try:
@@ -116,6 +120,7 @@ class HealthCheckController(HealthCheck,BaseModel):
             db.session.close()
     
     # update
+    @metrics_timer("db.query.healthz.get")
     @classmethod
     def update(cls, **kwargs):
         try:

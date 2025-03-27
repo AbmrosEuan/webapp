@@ -7,6 +7,8 @@ import os
 import io
 from flask_restful import Resource, reqparse
 from flask import jsonify, request, Response
+
+from utils.cloudwatch_integration import metrics_timer
 from utils.generate_id import GenerateID
 from controller.fileStorageController import FileStorageController
 from utils import commons
@@ -32,6 +34,7 @@ class FileStorageOtherResource(Resource):
         region_name=Settings.AWS_S3_REGION_NAME,
     )
 
+    @metrics_timer("api.s3.fileUpload")
     @classmethod
     def upload_file(cls):
 
