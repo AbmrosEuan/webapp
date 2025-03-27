@@ -72,6 +72,7 @@ jobs:
           pip install --upgrade pip
           pip install -r ./webappFlask/requirements.txt && pwd && ls -al && cd ./webappFlask && pip list
           pip install flask-sqlalchemy
+          mkdir -p /var/log/webapp && touch /var/log/webapp/flaskapp.log
           
           python3 manage.py runserver &
           sleep 5
