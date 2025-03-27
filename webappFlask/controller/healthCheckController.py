@@ -51,8 +51,9 @@ class HealthCheckController(HealthCheck,BaseModel):
             db.session.close()
 
     # get
-    @metrics_timer("db.query.healthz.get")
+
     @classmethod
+    @metrics_timer("db.query.healthz.get")
     def get(cls, **kwargs):
         try:
             filter_list = [cls.IsDeleted == 0]
@@ -83,8 +84,9 @@ class HealthCheckController(HealthCheck,BaseModel):
             db.session.close()
 
     # delete
-    @metrics_timer("db.query.healthz.delete")
+
     @classmethod
+    @metrics_timer("db.query.healthz.delete")
     def delete(cls, **kwargs):
         try:
             filter_list = [cls.IsDeleted == 0]
@@ -120,8 +122,9 @@ class HealthCheckController(HealthCheck,BaseModel):
             db.session.close()
     
     # update
-    @metrics_timer("db.query.healthz.get")
+
     @classmethod
+    @metrics_timer("db.query.healthz.get")
     def update(cls, **kwargs):
         try:
             

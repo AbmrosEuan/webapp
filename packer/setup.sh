@@ -65,8 +65,11 @@ sudo -u csye6225_user bash -c "
 #8.install and config cloudwatch agent
 #install agent
 sudo apt install -y wget
-wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
-sudo dpkg -i amazon-cloudwatch-agent.deb
+sudo bash -c "
+    cd /opt/csye6225/webappFlask &&
+    sudo wget -P /opt/csye6225/webappFlask https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb &&
+    sudo dpkg -i /opt/csye6225/webappFlask/amazon-cloudwatch-agent.deb
+"
 
 #config and start agent:
 #this processes will be done by terraform...
