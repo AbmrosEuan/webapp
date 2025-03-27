@@ -46,6 +46,9 @@ echo $(ls -al)
 sudo -u csye6225_user bash -c "
     source venv/bin/activate &&
     pip install -r ./requirements.txt
+    pwd
+    ls -al
+    mkdir -p ./var/log/webapp && touch ./var/log/webapp/flaskapp.log
 "
 
 # config systemd
