@@ -34,8 +34,9 @@ class FileStorageOtherResource(Resource):
         region_name=Settings.AWS_S3_REGION_NAME,
     )
 
-    @metrics_timer("api.s3.fileUpload")
+
     @classmethod
+    @metrics_timer("api.s3.fileUpload")
     def upload_file(cls):
 
         if request.method != 'POST':
@@ -86,6 +87,7 @@ class FileStorageOtherResource(Resource):
         return jsonify(res), 200
 
     @classmethod
+    @metrics_timer("api.s3.get_file")
     def get_file_info(cls):
 
         kwargs = request.args
@@ -108,6 +110,7 @@ class FileStorageOtherResource(Resource):
 
 
     @classmethod
+    @metrics_timer("api.s3.delete_file")
     def file_delete(cls):
         kwargs = request.args
         print(kwargs)

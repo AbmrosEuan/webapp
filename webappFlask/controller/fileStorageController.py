@@ -21,8 +21,9 @@ from models import BaseModel
 class FileStorageController(FileInfo, BaseModel):
 
     # add
-    @metrics_timer("db.query.S3file.add")
+
     @classmethod
+    @metrics_timer("db.query.S3file.add")
     def add(cls, **kwargs):
 
         try:
@@ -52,8 +53,9 @@ class FileStorageController(FileInfo, BaseModel):
             db.session.close()
 
     # get
-    @metrics_timer("db.query.S3file.get")
+
     @classmethod
+    @metrics_timer("db.query.S3file.get")
     def get(cls, **kwargs):
         try:
             filter_list = []
@@ -81,8 +83,9 @@ class FileStorageController(FileInfo, BaseModel):
             db.session.close()
 
     # delete
-    @metrics_timer("db.query.S3file.delete")
+
     @classmethod
+    @metrics_timer("db.query.S3file.delete")
     def delete(cls, **kwargs):
         try:
             filter_list = []
