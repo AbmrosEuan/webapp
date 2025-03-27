@@ -74,7 +74,9 @@ jobs:
           pip install flask-sqlalchemy
           pwd
           ls -al
-          mkdir -p ./webappFlask/var/log/webapp && touch ./webappFlask/var/log/webapp/flaskapp.log
+          sudo mkdir -p ./webappFlask/var/log/webapp && touch ./webappFlask/var/log/webapp/flaskapp.log
+          ls -al
+          sudo  chown -R runner:docker ./webappFlask/var/log/webapp
           ls -al
           python3 manage.py runserver &
           sleep 5
