@@ -31,7 +31,6 @@ s3 = session.client("s3")
 bucket_name = Settings.AWS_S3_BUCKET_NAME
 
 credentials = session.get_credentials()
-print("Access key used:", credentials.access_key)
 
 class FileStorageOtherResource(Resource):
 
