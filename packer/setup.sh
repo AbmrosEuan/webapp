@@ -73,9 +73,13 @@ sudo bash -c "
 #this processes will be done by terraform...
 
 #9. install aws cli
-sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/opt/awscliv2.zip"
-sudo unzip /opt/awscliv2.zip
-sudo /opt/aws/install
+sudo mkdir /opt/awscliInstall/
+sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/opt/awscliInstall/awscliv2.zip" &&
+sudo unzip /opt/awscliInstall/awscliv2.zip -d /opt/awscliInstall/ &&
+sudo /opt/awscliInstall/aws/install
+#sudo aws s3 cp s3://configbucket261447/webapp.env /opt/csye6225/webappFlask/app/webapp.env &&
+#sudo aws s3 cp s3://configbucket261447/cloud_watch_agent.json /opt/csye6225/webappFlask/config/cloud_watch_agent.json &&
+touch /opt/B.txt
 
 
 #9.config systemd for webapp
