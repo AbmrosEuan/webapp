@@ -60,8 +60,6 @@ sudo -u csye6225_user bash -c "
     ls -al
 "
 
-
-
 #8.install and config cloudwatch agent
 #install agent
 sudo apt install -y wget
@@ -74,6 +72,10 @@ sudo bash -c "
 #config and start agent:
 #this processes will be done by terraform...
 
+#9. install aws cli
+sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/opt/awscliv2.zip"
+sudo unzip /opt/awscliv2.zip
+sudo /opt/aws/install
 
 
 #9.config systemd for webapp
