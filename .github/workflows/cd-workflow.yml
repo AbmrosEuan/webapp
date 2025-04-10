@@ -58,7 +58,7 @@ jobs:
           
           NEW_VERSION=$(aws ec2 create-launch-template-version \
             --launch-template-id "$LT_ID" \
-            --launch-template-data "{\"ImageId\":\"$IMAGE_ID\"}" \
+            --launch-template-data "{\"ImageId\":\"$IMAGE_ID\"}", \"InstanceType\":\"t2.micro\"}" \
             --query 'LaunchTemplateVersion.VersionNumber' \
             --output text)
           echo "New Launch Template Version: $NEW_VERSION"
@@ -67,7 +67,7 @@ jobs:
           ASG_NAME="csye6225_asg"
           aws autoscaling update-auto-scaling-group \
             --auto-scaling-group-name $ASG_NAME \
-            --launch-template LaunchTemplateId=$LT_ID,Version='$NEW_VERSION'
+            --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
           echo "Auto Scaling Group '$ASG_NAME' has been updated to use Launch Template '$LT_ID'."
           
           
