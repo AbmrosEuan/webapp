@@ -51,7 +51,7 @@ jobs:
         run: |
           LT_ID=$(aws ec2 describe-launch-templates \
             --region us-east-1\
-            --query "LaunchTemplates[?starts_with(LaunchTemplateName, 'webapp_lt')].LaunchTemplateId" \
+            --query 'LaunchTemplates[?starts_with(LaunchTemplateName, `webapp_lt`)].LaunchTemplateId' \
             --output text)
           echo "Launch Template ID: $LT_ID"
           echo "LT_ID=$LT_ID" >> $GITHUB_ENV
