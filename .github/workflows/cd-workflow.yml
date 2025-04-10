@@ -73,6 +73,35 @@ jobs:
           echo "Auto Scaling Group '$ASG_NAME' has been updated to use Launch Template '$LT_ID'."
           
           
+      - name: Start Instance Refresh
+        run: |
+          REFRESH_ID=$(aws autoscaling start-instance-refresh \
+            --auto-scaling-group-name $ASG_NAME \
+            --query 'InstanceRefreshId' \
+            --output text)
           
+          echo "Started Instance Refresh with ID: $REFRESH_ID"
+          echo "REFRESH_ID=$REFRESH_ID" >> $GITHUB_ENV
+
+      - name: Wait for Instance Refresh to Complete
+        run: |
+          REFRESH_STATUS="InProgress"
+          
+          while [ "$REFRESH_STATUS" == "InProgress" ]; do
+            REFRESH_STATUS=$(aws autoscaling describe-instance-refreshes \
+              --auto-scaling-group-name csye6225_asg \
+              --instance-refresh-id $REFRESH_ID \
+              --query 'InstanceRefreshes[0].Status' \
+              --output text)
+            echo "Instance Refresh status: $REFRESH_STATUS"
+            sleep 10  
+          done
+
+          if [ "$REFRESH_STATUS" == "Successful" ]; then
+            echo "Instance Refresh completed successfully."
+          else
+            echo "Instance Refresh failed with status: $REFRESH_STATUS"
+            exit 1
+          fi
 
           
