@@ -53,7 +53,6 @@ jobs:
             --region us-east-1\
             --query "LaunchTemplates[?starts_with(LaunchTemplateName, 'webapp_lt')].LaunchTemplateId" \
             --output text)
-          
           echo "Launch Template ID: $LT_ID"
           echo "LT_ID=$LT_ID" >> $GITHUB_ENV
           
@@ -63,6 +62,15 @@ jobs:
             --query 'LaunchTemplateVersion.VersionNumber' \
             --output text)
           echo "New Launch Template Version: $NEW_VERSION"
-          echo "::set-output name=new_version::$NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          
+          ASG_NAME="csye6225_asg"
+          aws autoscaling update-auto-scaling-group \
+            --auto-scaling-group-name $ASG_NAME \
+            --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
+          echo "Auto Scaling Group '$ASG_NAME' has been updated to use Launch Template '$LT_ID'."
+          
+          
+          
 
           
