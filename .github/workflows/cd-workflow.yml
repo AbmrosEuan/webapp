@@ -52,7 +52,7 @@ jobs:
           LT_ID=$(
             aws ec2 describe-launch-templates \
             --region us-east-1 \
-            --query 'LaunchTemplates[?starts_with(LaunchTemplateName, 'webapp_lt')].LaunchTemplateId' \
+            --query 'LaunchTemplates[?starts_with(LaunchTemplateName, `webapp_lt`)].LaunchTemplateId | [0]' \
             --output text
           )
           echo "Launch Template ID: $LT_ID"
@@ -60,7 +60,7 @@ jobs:
           
           NEW_VERSION=$(aws ec2 create-launch-template-version \
             --launch-template-id "$LT_ID" \
-            --launch-template-data "{\"ImageId\":\"$IMAGE_ID\"}", \"InstanceType\":\"t2.micro\"}" \
+            --launch-template-data "{\"ImageId\":\"$IMAGE_ID\", \"InstanceType\":\"t2.micro\"}" \
             --query 'LaunchTemplateVersion.VersionNumber' \
             --output text)
           echo "New Launch Template Version: $NEW_VERSION"
