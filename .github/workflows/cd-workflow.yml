@@ -40,6 +40,13 @@ jobs:
             --image-id $IMAGE_ID\
             --launch-permission "Add=[{UserId=${{ secrets.AWS_DEMO_ID }}}]"
 
+      - name: Configure AWS CLI for demo user
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_AK_DEMO }}
+          aws-secret-access-key: ${{ secrets.AWS_SAK_DEMO }}
+          aws-region: us-east-1
+
       - name: Create new template and update ASG
         run: |
           LT_ID=$(aws ec2 describe-launch-templates \
@@ -51,8 +58,4 @@ jobs:
           
           echo "LT_ID=$LT_ID" >> $GITHUB_ENV
 
-      - name: Test
-        run: |
-          echo "img: $IMAGE_ID"
-          echo "LT: $LT_ID"
           
