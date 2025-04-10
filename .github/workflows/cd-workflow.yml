@@ -67,6 +67,7 @@ jobs:
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
           
           ASG_NAME="csye6225_asg"
+          echo "asg_name=$ASG_NAME" >> $GITHUB_OUTPUT
           aws autoscaling update-auto-scaling-group \
             --auto-scaling-group-name $ASG_NAME \
             --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
