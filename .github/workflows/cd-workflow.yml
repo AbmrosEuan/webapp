@@ -23,7 +23,7 @@ jobs:
       - name: Verify AWS Credentials
         run: aws sts get-caller-identity
 
-      - name: Get latest app AMI ID
+      - name: share AMI with demo
         run: |
           IMAGE_ID=$(
               aws ec2 describe-images \
@@ -32,4 +32,11 @@ jobs:
               --query 'Images[*].[ImageId,Name,CreationDate]' \
               --output json | jq -r 'sort_by(.[2]) | last | .[0]'
           )
+          
           echo "Latest AMI ID: $IMAGE_ID"
+          
+          aws ec2 modify-image-attribute \
+            --image-id $IMAGE_ID\
+            --launch-permission "Add=[{UserId=${{ secrets.AWS_DEMO_ID }}}]"
+          
+          
