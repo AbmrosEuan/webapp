@@ -101,18 +101,18 @@ jobs:
       - name: Wait for Instance Refresh to Complete
         run: |
           REFRESH_STATUS="Pending"
-
-          while [ "$REFRESH_STATUS" == "Pending" ]; do
+          
+          while [[ "$REFRESH_STATUS" == "Pending" || "$REFRESH_STATUS" == "InProgress" ]]; do
             REFRESH_STATUS=$(aws autoscaling describe-instance-refreshes \
               --auto-scaling-group-name csye6225_asg \
               --instance-refresh-id $REFRESH_ID \
               --query 'InstanceRefreshes[0].Status' \
               --output text)
             echo "Instance Refresh status: $REFRESH_STATUS"
-            sleep 10
+            sleep 10 
           done
 
-          if [ "$REFRESH_STATUS" == "Successful" ]; then
+          if [[ "$REFRESH_STATUS" == "Successful" ]]; then
             echo "Instance Refresh completed successfully."
           else
             echo "Instance Refresh failed with status: $REFRESH_STATUS"
