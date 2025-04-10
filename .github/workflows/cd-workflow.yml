@@ -67,9 +67,12 @@ jobs:
           
           echo "Launch Template Data: $LT_DATA"
           
+          # Use jq to update the ImageId in the template data
+          UPDATED_LAUNCH_TEMPLATE=$(echo $LT_DATA | jq --arg image_id "$IMAGE_ID" '. + {ImageId: $image_id}')
+          
           NEW_VERSION=$(aws ec2 create-launch-template-version \
             --launch-template-id "$LT_ID" \
-            --launch-template-data "{\"ImageId\":\"$IMAGE_ID\"$LT_DATA}" \
+            --launch-template-data "$UPDATED_LAUNCH_TEMPLATE" \
             --version-description "Updated with new AMI ID" \
             --query 'LaunchTemplateVersion.VersionNumber' \
             --output text)
