@@ -67,7 +67,8 @@ jobs:
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
           
           ASG_NAME="csye6225_asg"
-          echo "asg_name=$ASG_NAME" >> $GITHUB_OUTPUT
+          echo "ASG_NAME=$ASG_NAME" >> $GITHUB_OUTPUT
+          
           aws autoscaling update-auto-scaling-group \
             --auto-scaling-group-name $ASG_NAME \
             --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
@@ -77,7 +78,7 @@ jobs:
       - name: Start Instance Refresh
         run: |
           REFRESH_ID=$(aws autoscaling start-instance-refresh \
-            --auto-scaling-group-name $ASG_NAME \
+            --auto-scaling-group-name ${{ env.ASG_NAME }} \
             --query 'InstanceRefreshId' \
             --output text)
           
