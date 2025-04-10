@@ -78,7 +78,7 @@ jobs:
       - name: Start Instance Refresh
         run: |
           REFRESH_ID=$(aws autoscaling start-instance-refresh \
-            --auto-scaling-group-name ${{ env.ASG_NAME }} \
+            --auto-scaling-group-name csye6225_asg\
             --query 'InstanceRefreshId' \
             --output text)
           
