@@ -7,7 +7,7 @@ on:
       - completed
 
 jobs:
-  share-ami:
+  dev-share-ami:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS CLI
@@ -23,7 +23,7 @@ jobs:
       - name: Verify AWS Credentials
         run: aws sts get-caller-identity
 
-      - name: share AMI with demo
+      - name: Share AMI with demo
         run: |
           IMAGE_ID=$(
               aws ec2 describe-images \
@@ -34,9 +34,25 @@ jobs:
           )
           
           echo "Latest AMI ID: $IMAGE_ID"
+          echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
           
           aws ec2 modify-image-attribute \
             --image-id $IMAGE_ID\
             --launch-permission "Add=[{UserId=${{ secrets.AWS_DEMO_ID }}}]"
+
+      - name: Create new template and update ASG
+        run: |
+          LT_ID=$(aws ec2 describe-launch-templates \
+            --region us-east-1\
+            --query "LaunchTemplates[?starts_with(LaunchTemplateName, 'webapp_lt')].LaunchTemplateId" \
+            --output text)
           
+          echo "Launch Template ID: $LT_ID"
+          
+          echo "LT_ID=$LT_ID" >> $GITHUB_ENV
+
+      - name: Test
+        run: |
+          echo "img: $IMAGE_ID"
+          echo "LT: $LT_ID"
           
