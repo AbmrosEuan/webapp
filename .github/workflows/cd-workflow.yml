@@ -1,0 +1,35 @@
+name: CD
+
+on:
+  workflow_run:
+    workflows: ["Build and Deploy Custom Image"]
+    types:
+      - completed
+
+jobs:
+  share-ami:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_github_action }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_github_action }}
+
+      - name: Verify AWS CLI
+        run: aws s3 ls
+
+      - name: Verify AWS Credentials
+        run: aws sts get-caller-identity
+
+      - name: Get latest app AMI ID
+        run: |
+          IMAGE_ID=$(
+              aws ec2 describe-images \
+              --owners $(aws sts get-caller-identity --query Account --output text) \
+              --filters "Name=name,Values=csye6225_app*" \
+              --query 'Images[*].[ImageId,Name,CreationDate]' \
+              --output json | jq -r 'sort_by(.[2]) | last | .[0]'
+          )
+          echo "Latest AMI ID: $IMAGE_ID"

@@ -164,13 +164,9 @@ jobs:
           packer init machine-image.pkr.hcl
           packer fmt machine-image.pkr.hcl
           packer validate  machine-image.pkr.hcl
-          
+
+#          aws ec2 describe-subnets --subnet-ids subnet-09550cd1fa139900a
           export PACKER_LOG=1
           export PACKER_LOG_PATH="packer.log"
-
-          packer build machine-image.pkr.hcl | tee build.log
           
-          AMI_ID=$(grep 'artifact,0,id' build.log | tail -n 1 | awk -F, '{print $6}')
-          echo "AMI_ID=$AMI_ID" >> $GITHUB_ENV
-          
-          echo "AMI_ID=$AMI_ID"
+          packer build machine-image.pkr.hcl
