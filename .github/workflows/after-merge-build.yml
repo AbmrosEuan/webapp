@@ -165,7 +165,6 @@ jobs:
           packer fmt machine-image.pkr.hcl
           packer validate  machine-image.pkr.hcl
 
-#          aws ec2 describe-subnets --subnet-ids subnet-09550cd1fa139900a
           export PACKER_LOG=1
           export PACKER_LOG_PATH="packer.log"
           
