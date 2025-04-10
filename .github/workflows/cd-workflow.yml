@@ -67,7 +67,7 @@ jobs:
           ASG_NAME="csye6225_asg"
           aws autoscaling update-auto-scaling-group \
             --auto-scaling-group-name $ASG_NAME \
-            --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
+            --launch-template LaunchTemplateId=$LT_ID,Version='$NEW_VERSION'
           echo "Auto Scaling Group '$ASG_NAME' has been updated to use Launch Template '$LT_ID'."
           
           
