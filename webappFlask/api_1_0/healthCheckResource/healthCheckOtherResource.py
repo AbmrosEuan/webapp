@@ -43,6 +43,17 @@ class HealthCheckOtherResource(Resource):
         if res['code'] == RET.OK:
             return Response(status=200)
 
+    @classmethod
+    @metrics_timer("api.cicd")
+    def cicd_test(cls):
+        logger.info("Calling cicd_test")
 
+        res = HealthCheckController.add()
 
+        if res['code'] != RET.OK:
+            logger.error("Failed to call cicd_test")
+            return Response(status=503)
+
+        if res['code'] == RET.OK:
+            return Response(status=200)
 
