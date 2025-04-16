@@ -22,6 +22,10 @@ def healthz_validation():
 def healthz():
     return HealthCheckOtherResource.api_health_check()
 
-# @healthcheck_blueprint.route('/cicd', methods=['GET'], endpoint='CiCd')
-# def cicdtest():
-#     return HealthCheckOtherResource.cicd_test()
+@healthcheck_blueprint.route('/cicd', methods=['GET'], endpoint='CiCd')
+def cicdtest():
+    return HealthCheckOtherResource.cicd_test()
+
+@healthcheck_blueprint.route('/cicd2', methods=['GET'], endpoint='CiCd2')
+def cicdtest():
+    return HealthCheckOtherResource.cicd_test()
